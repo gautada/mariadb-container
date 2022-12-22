@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  mariadb:
+    build:
+      args:
+        ALPINE_VERSION: "latest"
+        JEKYLL_VERSION: "1.17.3"
+      context: .
+      dockerfile: Containerfile
+      no_cache: true
+      tags:
+        - "mariadb:dev"
+    image: "mariadb:dev"
+    ports:
+      - "3306:3306"
+    volumes:
+      - "container:/mnt/volumes/container"
+      - "backup:/mnt/volumes/backup"
+        
+volumes:
+  container:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/mada/Workspace/mariadb/container-volume
+  backup:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/mada/Workspace/mariadb/backup-volume
+      
