@@ -19,11 +19,13 @@ app_version() {
  mysqld --version | awk -F ' ' '{print $3}' | awk -F '-' '{print $1}'
 }
 
-echo "$DB_DIR"
-echo "$PLUGIN_DIR"
+/usr/bin/sudo /usr/sbin/lighttpd -f /etc/lighttpd/lighttpd.conf
+
+# echo "$DB_DIR"
+# echo "$PLUGIN_DIR"
 if [ ! -d "$DB_DIR" ] ; then
  /bin/mkdir -p "$DB_DIR" "$PLUGIN_DIR"
- /usr/bin/mariadb-install-db --user=mariadb --ldata=$DB_DIR
+ /usr/bin/sudo /usr/bin/mariadb-install-db --user=mariadb --ldata=$DB_DIR
 fi
 
 if [ -z "$@" ] ; then
@@ -32,14 +34,14 @@ if [ -z "$@" ] ; then
   TEST=$?
   if [ $TEST -eq 1 ] ; then
   log "-i" "entrypoint" "Blocking application - $APP_NAME($(app_version))"
-  # /usr/bin/mariadbd-safe --basedir=$DATA_DIR --datadir=$DB_DIR --plugin-dir=$PUGIN_DIR
-  /usr/bin/mariadbd --basedir=/mnt/volumes/container --datadir=/mnt/volumes/container/db --plugin-dir=/usr/lib/mariadb/plugin --log-error=/mnt/volumes/container/db/mariadb.err --pid-file=mariadb.pid
+  /usr/bin/mariadbd-safe --basedir=$DATA_DIR --datadir=$DB_DIR --plugin-dir=$PUGIN_DIR
+  # /usr/bin/mariadbd --basedir=/mnt/volumes/container --datadir=/mnt/volumes/container/db --plugin-dir=/usr/lib/mariadb/plugin --log-error=/mnt/volumes/container/db/mariadb.err --pid-file=mariadb.pid
   fi
   return 1
 else
  log "-i" "entrypoint" "Override default($ENTRYPOINT_PARAMS)"
  log "-i" "entrypoint" "Detatched application - $APP_NAME($(app_version))"
- # /usr/bin/mariadbd-safe --basedir=$DATA_DIR --datadir=$DB_DIR --plugin-dir=$PUGIN_DIR >> /mnt/volumes/container/.log 2>&1 &
- /usr/bin/mariadbd --basedir=/mnt/volumes/container --datadir=/mnt/volumes/container/db --plugin-dir=/usr/lib/mariadb/plugin --log-error=/mnt/volumes/container/db/mariadb.err --pid-file=mariadb.pid > /mnt/volumes/container/.log 2>&1 &
+ /usr/bin/mariadbd-safe --basedir=$DATA_DIR --datadir=$DB_DIR --plugin-dir=$PUGIN_DIR >> /mnt/volumes/container/.log 2>&1 &
+ # /usr/bin/mariadbd --basedir=/mnt/volumes/container --datadir=/mnt/volumes/container/db --plugin-dir=/usr/lib/mariadb/plugin --log-error=/mnt/volumes/container/db/mariadb.err --pid-file=mariadb.pid > /mnt/volumes/container/.log 2>&1 &
  return 0
 fi
