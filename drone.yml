@@ -18,7 +18,7 @@ steps:
 
 - name: publish
   environment:
-    CONTAINER_NAME: "gitea"
+    CONTAINER_NAME: "mariadb"
     CONTAINER_VERSION: "10.6.11"
     DOCKERIO_USERNAME:
       from_secret: username.docker.io
