@@ -13,6 +13,7 @@ services:
     image: "mariadb:dev"
     ports:
       - "3306:3306"
+      - "8080:8080"
     volumes:
       - "container:/mnt/volumes/container"
       - "backup:/mnt/volumes/backup"
