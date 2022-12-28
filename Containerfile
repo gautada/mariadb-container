@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION="3.17.0"
+ARG ALPINE_VERSION="latest"
 
 FROM gautada/alpine:$ALPINE_VERSION
 

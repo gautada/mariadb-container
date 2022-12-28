@@ -4,7 +4,6 @@ services:
     build:
       args:
         ALPINE_VERSION: "latest"
-        JEKYLL_VERSION: "1.17.3"
       context: .
       dockerfile: Containerfile
       no_cache: true
